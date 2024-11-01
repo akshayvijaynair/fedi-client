@@ -1,8 +1,5 @@
 <ion-card>
   <ion-card-header>
-    <ion-avatar>
-      <ion-img *ngIf="userFullImagePath" [src]="userFullImagePath"></ion-img>
-    </ion-avatar>
     <ion-button
       (click)="presentModal()"
       shape="round"
@@ -12,14 +9,15 @@
       <span class="ion-text-left">Start a post</span>
     </ion-button>
   </ion-card-header>
+
   <ion-card-content class="ion-hide-sm-down">
     <ion-button color="medium" fill="clear">
-      <ion-icon color="secondary" name="image-outline"></ion-icon>
+      <ion-icon color="danger" name="image-outline"></ion-icon>
       <ion-text>Photo</ion-text>
     </ion-button>
     <ion-button color="medium" fill="clear">
-      <ion-icon color="success" name="play-sharp"></ion-icon>
-      <ion-text>Video</ion-text>
+      <ion-icon color="success" name="document-text-outline"></ion-icon>
+      <ion-text>Blog</ion-text>
     </ion-button>
     <ion-button color="medium" fill="clear">
       <ion-icon color="warning" name="calendar-outline"></ion-icon>

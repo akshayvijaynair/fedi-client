@@ -1,6 +1,48 @@
 ion-toolbar {
-  height: 50px;
+  height: 5rem;
   ion-tab-button {
     padding-top: 4px;
   }
 }
+
+ion-toolbar {
+  position: relative;
+}
+
+ion-tab-bar {
+  position: relative;
+  padding-bottom: 10px; // Space to accommodate the overlapping Post button
+}
+
+.tab-button-center {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.tab-icon {
+  font-size: 32px;
+  color: var(--ion-color-primary);
+}
+
+.badge-danger {
+  position: absolute;
+  margin-left: -6px;
+  margin-top: -10px;
+  height: 16px;
+  width: 16px;
+  border-radius: 9999px;
+  font-weight: 400;
+  font-size: 12px;
+}
+

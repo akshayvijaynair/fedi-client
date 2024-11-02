@@ -1,27 +1,26 @@
 .toolbar-wrapper {
   display: flex;
-  max-width: 1128px;
+  max-width: 1280px;
   margin: auto;
+  padding: 0 16px;
+}
+.full-width{
+  margin-left: 2rem;
+  width: 30rem;
 }
 
-.linkedin-logo {
-  font-size: 40px;
+.logo {
+  font-size: 3rem;
 }
 
 ion-col div,
 ion-badge {
-  font-size: 12px;
+  font-size: 1.2rem;
   font-weight: 400;
 }
 
-ion-searchbar {
-  --box-shadow: none;
-  transform: scale(0.8);
-  margin-left: -40px;
-}
-
 ion-icon {
-  font-size: 24px;
+  font-size: 2rem;
 }
 
 ion-avatar {
@@ -30,11 +29,27 @@ ion-avatar {
   margin: auto;
 }
 
-ion-col {
-  width: 80px !important;
-  text-align: center;
-}
-
 ion-header {
   border-bottom: 1px solid var(--ion-color-light-tint);
 }
+
+.badge-danger {
+  position: absolute;
+  margin-left: 1.5rem;
+  margin-bottom: 1.2rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.header-avatar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1em;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+

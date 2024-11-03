@@ -24,13 +24,18 @@ export class AuthInterceptorService implements HttpInterceptor {
     ).pipe(
       switchMap((data) => {
         const token = data?.value;
+        let headers = req.headers
+          .set('Content-Type', 'application/ld+json')
+          .set('Accept', 'application/ld+json'); // Set JSON-LD headers globally
+
         if (token) {
-          const clonedRequest = req.clone({
-            headers: req.headers.set('Authorization', 'Bearer ' + token),
-          });
-          return next.handle(clonedRequest);
+          headers = headers.set('Authorization', 'Bearer ' + token); // Add Authorization if token exists
         }
-        return next.handle(req);
+
+        // Clone the request with updated headers
+        const clonedRequest = req.clone({ headers });
+
+        return next.handle(clonedRequest);
       })
     );
   }

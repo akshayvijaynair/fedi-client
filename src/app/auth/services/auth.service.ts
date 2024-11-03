@@ -9,39 +9,34 @@ import { environment } from 'src/environments/environment';
 import { NewUser } from '../models/newUser.model';
 import { Role, User } from '../models/user.model';
 import { UserResponse } from '../models/userResponse.model';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private user$ = new BehaviorSubject<User>({id: 0, email:"init@test.org", firstName: "test", lastName:"t"});
+  user$ = new BehaviorSubject<UserResponse['user'] | null>(null);  // Assuming BehaviorSubject setup
 
   private httpOptions: { headers: HttpHeaders } = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
-  get userStream(): Observable<User> {
+  get userStream(): Observable<User | null> {
     return this.user$.asObservable();
   }
 
   get isUserLoggedIn(): Observable<boolean> {
     return this.user$.asObservable().pipe(
-      switchMap((user: User) => {
+      switchMap((user: User | null) => {
         const isUserAuthenticated = user !== null;
         return of(isUserAuthenticated);
       })
     );
   }
 
-  get userRole(): Observable<Role | string> {
+  get userId(): Observable<string> {
     return this.user$.asObservable().pipe(
-      switchMap((user: User) => of(user?.role ?? "user")) // Default to "user" or another role as needed
-    );
-  }
-
-  get userId(): Observable<number> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User) => of(user?.id ?? 0)) // Default to `0` or another fallback if `user` is `null`
+      switchMap((user: User | null) => of(user?.id ?? "")) // Default to `0` or another fallback if `user` is `null`
     );
   }
 
@@ -57,11 +52,8 @@ export class AuthService {
   get userFullImagePath(): Observable<string> {
     return this.user$.asObservable().pipe(
       switchMap((user: User | null) => {
-        const doesAuthorHaveImage = !!user?.imagePath;
+        // const doesAuthorHaveImage = !!user?.imagePath;
         let fullImagePath = this.getDefaultFullImagePath();
-        if (doesAuthorHaveImage) {
-          fullImagePath = this.getFullImagePath(user.imagePath?? "");
-        }
         return of(fullImagePath);
       })
     );
@@ -92,7 +84,7 @@ export class AuthService {
       take(1 ),
       map((user: User | null) => {
         if(user){
-          user.imagePath = imagePath;
+          //user.imagePath = imagePath;
           this.user$.next(user);
           return user;
         } else {
@@ -115,7 +107,7 @@ export class AuthService {
         tap(({ modifiedFileName }) => {
           let user = this.user$.value;
           if(user){
-            user.imagePath = modifiedFileName;
+            // /user.imagePath = modifiedFileName;
             this.user$.next(user);
           }
         })
@@ -123,12 +115,26 @@ export class AuthService {
   }
 
   register(newUser: NewUser): Observable<User> {
+    // Generate GUID for ID if not provided
+    newUser.id = newUser.id || uuidv4();
+
+    // Set up the default URLs for ActivityPub compatibility
+    const baseUrl = `${environment.baseApiUrl}/users/${newUser.id}`;
+
+    const jsonLdUser = {
+      '@context': 'https://www.w3.org/ns/activitystreams',
+      ...newUser,
+      type: 'Person',
+      inbox: `${baseUrl}/inbox`,
+      outbox: `${baseUrl}/outbox`,
+      followers: `${baseUrl}/followers`,
+      following: `${baseUrl}/following`,
+      url: baseUrl,  // URL to the user's profile
+      icon: newUser.icon // Retain any provided icon data
+    };
+
     return this.http
-      .post<User>(
-        `${environment.baseApiUrl}/auth/register`,
-        newUser,
-        this.httpOptions
-      )
+      .post<User>(`${environment.baseApiUrl}/auth/register`, jsonLdUser)
       .pipe(take(1));
   }
 
@@ -136,8 +142,7 @@ export class AuthService {
     return this.http
       .post<{ token: string }>(
         `${environment.baseApiUrl}/auth/login`,
-        { email, password },
-        this.httpOptions
+        { email, password }
       )
       .pipe(
         take(1),
@@ -171,13 +176,13 @@ export class AuthService {
           this.user$.next(decodedToken.user);
           return true;
         }
-        return false; // Ensure all code paths return a boolean
+        return false;
       })
     );
   }
 
   logout(): void {
-    this.user$.next({id: 0, email:"init@test.org", firstName: "test", lastName:"t"});
+    this.user$.next(null);
     Preferences.remove({ key: 'token' });
     this.router.navigateByUrl('/auth');
   }

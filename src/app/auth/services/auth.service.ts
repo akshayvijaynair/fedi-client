@@ -115,26 +115,17 @@ export class AuthService {
   }
 
   register(newUser: NewUser): Observable<User> {
-    // Generate GUID for ID if not provided
-    newUser.id = newUser.id || uuidv4();
-
-    // Set up the default URLs for ActivityPub compatibility
-    const baseUrl = `${environment.baseApiUrl}/users/${newUser.id}`;
-
-    const jsonLdUser = {
-      '@context': 'https://www.w3.org/ns/activitystreams',
-      ...newUser,
-      type: 'Person',
-      inbox: `${baseUrl}/inbox`,
-      outbox: `${baseUrl}/outbox`,
-      followers: `${baseUrl}/followers`,
-      following: `${baseUrl}/following`,
-      url: baseUrl,  // URL to the user's profile
-      icon: newUser.icon // Retain any provided icon data
+    // Only send the basic user data
+    const basicUserDetails = {
+      id: "2",
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      password: newUser.password
     };
 
     return this.http
-      .post<User>(`${environment.baseApiUrl}/auth/register`, jsonLdUser)
+      .post<NewUser>(`${environment.baseApiUrl}/auth/register`, basicUserDetails)
       .pipe(take(1));
   }
 

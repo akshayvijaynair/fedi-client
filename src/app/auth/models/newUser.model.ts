@@ -4,21 +4,4 @@ export interface NewUser {
   lastName: string;
   email: string;
   password: string;
-  preferredUsername?: string;
-  type?: "Person";  // Standard type for individual users
-  inbox?: string;   // URL for the user's inbox
-  outbox?: string;  // URL for the user's outbox
-  publicKey?: {
-    id: string;  // URI for the public key
-    owner: string;  // ID of the user who owns this key
-    publicKeyPem: string;  // PEM-encoded public key
-  };
-  followers?: string;  // URL to the followers collection
-  following?: string;  // URL to the following collection
-  url?: string;  // URL to the user's profile
-  icon?: {
-    type: 'Image';
-    mediaType: string; // e.g., 'image/png' or 'image/jpeg'
-    url: string;       // URL to the user's profile image
-  };
 }

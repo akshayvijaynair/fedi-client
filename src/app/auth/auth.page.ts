@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NewUser } from './models/newUser.model';
@@ -28,10 +28,10 @@ export class AuthPage {
       });
     } else {
       // if (this.submissionType === 'join')
-      const { firstName, lastName } = this.form?.value;
+      const { firstName, lastName, userName } = this.form?.value;
       if (!firstName || !lastName) return;
 
-      const newUser: NewUser = { firstName, lastName, email, password };
+      const newUser: NewUser = { userName, firstName, lastName, email, password };
 
       return this.authService.register(newUser).subscribe(() => {
         this.toggleText();

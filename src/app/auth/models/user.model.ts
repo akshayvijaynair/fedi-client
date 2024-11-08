@@ -8,7 +8,7 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
-  preferredUsername?: string;
+  name?: string;
   type?: "Person";  // Standard type for individual users
   inbox?: string;   // URL for the user's inbox
   outbox?: string;  // URL for the user's outbox

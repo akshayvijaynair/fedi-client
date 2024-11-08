@@ -13,6 +13,23 @@
     <ion-card>
       <ng-container *ngIf="submissionType === 'join'">
         <ion-item>
+          <ion-label position="floating">Username</ion-label>
+          <ion-input
+            #userNameInput="ngModel"
+            ngModel
+            type="text"
+            name="userName"
+            required
+          ></ion-input>
+        </ion-item>
+        <ion-text
+          color="danger"
+          *ngIf="!userNameInput.valid && userNameInput.touched"
+        >Please enter a unique username.</ion-text
+        >
+      </ng-container>
+      <ng-container *ngIf="submissionType === 'join'">
+        <ion-item>
           <ion-label position="floating">First name</ion-label>
           <ion-input
             #firstNameInput="ngModel"

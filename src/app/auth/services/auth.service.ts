@@ -26,9 +26,12 @@ export class AuthService {
   }
 
   get isUserLoggedIn(): Observable<boolean> {
+    console.log("isUserLoggedIn: ", this.user$);
     return this.user$.asObservable().pipe(
       switchMap((user: User | null) => {
+        console.log("isUserLoggedIn|switchMap: ", user);
         const isUserAuthenticated = user !== null;
+        console.log("isUserLoggedIn|switchMap: ", isUserAuthenticated);
         return of(isUserAuthenticated);
       })
     );
@@ -143,6 +146,7 @@ export class AuthService {
             value: response.token,
           });
           const decodedToken: UserResponse = jwtDecode(response.token);
+          console.log(decodedToken);
           this.user$.next(decodedToken.user);
         })
       );
@@ -155,6 +159,7 @@ export class AuthService {
       })
     ).pipe(
       map((data) => {
+        console.log("data: ", data);
         const token = data.value;
         if (!token) return false;
 

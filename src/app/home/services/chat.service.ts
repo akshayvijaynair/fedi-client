@@ -35,7 +35,7 @@ export class ChatService {
     this.socket.emit('createConversation', friend);
   }
 
-  joinConversation(friendId: number): void {
+  joinConversation(friendId: string): void {
     this.socket.emit('joinConversation', friendId);
   }
 

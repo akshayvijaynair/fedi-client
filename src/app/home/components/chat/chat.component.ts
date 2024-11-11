@@ -18,7 +18,7 @@ export class ChatComponent {
   @ViewChild('form') form!: NgForm;
 
   userFullImagePath!: string;
-  userId!: number;
+  userId: string|null = null;
 
   conversations$!: Observable<Conversation[]>;
   conversations: Conversation[] = [];
@@ -28,8 +28,8 @@ export class ChatComponent {
   messages: Message[] = [];
 
   friends: User[] = [];
-  friend!: User;
-  friend$: BehaviorSubject<User> = new BehaviorSubject<User>({id: 0, email:"init@test.org", firstName: "test", lastName:"t"});
+  friend: User| null = null;
+  friend$: BehaviorSubject<User | null> = new BehaviorSubject<User| null>(null);
 
   selectedConversationIndex: number = 0;
 
@@ -63,7 +63,7 @@ export class ChatComponent {
       });
 
     this.userIdSubscription = this.authService.userId.subscribe(
-      (userId: number) => {
+      (userId: string) => {
         this.userId = userId;
       }
     );
@@ -102,7 +102,7 @@ export class ChatComponent {
 
     this.friendSubscription = this.friend$.subscribe((friend: any) => {
       if (JSON.stringify(friend) !== '{}') {
-        this.chatService.joinConversation(this.friend.id);
+        this.chatService.joinConversation(this.friend?.id?? "");
       }
     });
 
@@ -118,7 +118,7 @@ export class ChatComponent {
           friends.forEach((friend: User) => {
             this.chatService.createConversation(friend);
           });
-          this.chatService.joinConversation(this.friend.id);
+          this.chatService.joinConversation(this.friend.id?? "");
         }
       });
   }
@@ -127,7 +127,7 @@ export class ChatComponent {
     const { message } = this.form.value;
     if (!message) return;
 
-    let conversationUserIds = [this.userId, this.friend.id].sort();
+    let conversationUserIds = [this.userId, this.friend?.id].sort();
 
     this.conversations.forEach((conversation: Conversation) => {
       let userIds = conversation?.users?.map((user: User) => user.id).sort();
@@ -157,10 +157,10 @@ export class ChatComponent {
     if(user){
       if (user.id === this.userId) {
         return this.userFullImagePath;
-      } else if (user.imagePath) {
-        return url + user.imagePath;
-      } else if (this.friend.imagePath) {
-        return url + this.friend.imagePath;
+      } else if (user.icon?.url) {
+        return url + user.icon.url;
+      } else if (this.friend?.icon?.url) {
+        return url + this.friend.icon.url;
       } else {
         return url + 'blank-profile-picture.png';
       }
@@ -178,7 +178,7 @@ export class ChatComponent {
     this.conversation = {};
     this.messages = [];
     this.friends = [];
-    this.friend = {id: 0, email:"init@test.org", firstName: "test", lastName:"t"};
+    this.friend = null;
 
     this.messagesSubscription.unsubscribe();
     this.userImagePathSubscription.unsubscribe();

@@ -1,14 +1,14 @@
 ion-card {
-  width: 225px;
+  width: 100%; // Stretch the card to fill parent width
   box-shadow: none;
   border: 1px solid #e1e1e1;
 }
 
 .backdrop {
-  height: 54px;
+  height: 50px;
   display: flex;
   .background-one {
-    width: 170px;
+    width: 150px;
     height: 100%;
   }
   .half-ellipse {
@@ -27,7 +27,7 @@ ion-card {
 }
 
 ion-card-header {
-  margin-top: -54px;
+  margin-top: -40px;
   ion-avatar {
     width: 72px;
     height: 72px;
@@ -44,4 +44,14 @@ ion-card-content div {
 
 .connections {
   margin-top: 8px;
+}
+
+.card-content {
+  -webkit-padding-start: 0;
+  padding-inline-start: 0;
+  -webkit-padding-end: 0;
+  padding-inline-end: 0;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
 }

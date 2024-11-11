@@ -1,16 +1,7 @@
 ion-card {
-  width: 50rem;
+  width: 100%;
   box-shadow: none;
   border: 1px solid #e1e1e1;
-
-  @media (max-width: 576px) {
-    width: 90%;
-    margin: auto;
-  }
-
-  @media (max-width: 440px) {
-    width: 95%;
-  }
 }
 
 ion-card-header {
@@ -51,4 +42,16 @@ ion-card-content {
   ion-text {
     font-size: 1.2rem; // Adjust font size for better readability
   }
+}
+
+app-start-post,
+app-all-posts {
+  flex-grow: 1; // Allow these elements to grow and use space
+  margin: 2rem 0 2rem 0;
+}
+
+ion-card {
+  width: 100%; // Stretch the card to fill parent width
+  box-shadow: none;
+  border: 1px solid #e1e1e1;
 }

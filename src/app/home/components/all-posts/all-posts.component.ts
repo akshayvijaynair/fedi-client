@@ -33,7 +33,7 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
   numberOfPosts = 5;
   skipPosts = 0;
 
-  userId$ = new BehaviorSubject<number>(0);
+  userId$ = new BehaviorSubject<string>("");
 
   constructor(
     private postService: PostService,
@@ -43,11 +43,11 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.userSubscription = this.authService.userStream.subscribe(
-      (user: User) => {
+      (user: User | null) => {
         this.allLoadedPosts.forEach((post: Post, index: number) => {
-          if (user?.imagePath && post.author.id === user.id) {
+          if (user?.icon?.url && post.author.id === user.id) {
             this.allLoadedPosts[index].fullImagePath =
-              this.authService.getFullImagePath(user.imagePath);
+              this.authService.getFullImagePath(user.icon.url);
           }
         });
       }
@@ -56,7 +56,7 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
     this.getPosts(false, '');
 
     // Initialize `userId$` if not already defined
-    this.authService.userId.pipe(take(1)).subscribe((userId: number) => {
+    this.authService.userId.pipe(take(1)).subscribe((userId: string) => {
       this.userId$.next(userId);
     });
   }
@@ -85,11 +85,11 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
       .getSelectedPosts(this.queryParams)
       .subscribe((posts: Post[]) => {
         for (let postIndex = 0; postIndex < posts.length; postIndex++) {
-          const doesAuthorHaveImage = !!posts[postIndex].author.imagePath;
+          const doesAuthorHaveImage = !!posts[postIndex].author.icon?.url;
           let fullImagePath = this.authService.getDefaultFullImagePath();
           if (doesAuthorHaveImage) {
             fullImagePath = this.authService.getFullImagePath(
-              posts[postIndex].author.imagePath?? ""
+              posts[postIndex].author.icon?.url?? ""
             );
           }
           posts[postIndex]['fullImagePath'] = fullImagePath;

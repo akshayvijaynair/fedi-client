@@ -1,8 +1,0 @@
-{
-  "name": "fedi-client",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular",
-  "id": "e0a9b771"
-}

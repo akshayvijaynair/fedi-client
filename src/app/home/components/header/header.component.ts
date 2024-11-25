@@ -1,12 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import {debounceTime, Subscription} from 'rxjs';
+import {filter, switchMap, take, tap} from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { FriendRequest } from '../../models/FriendRequest';
 import { ConnectionProfileService } from '../../services/connection-profile.service';
 import { FriendRequestsPopoverComponent } from './friend-requests-popover/friend-requests-popover.component';
 import { PopoverComponent } from './popover/popover.component';
+import {FormControl} from "@angular/forms";
+import {AccountService} from "../../services/account-search.service";
 
 @Component({
   selector: 'app-header',
@@ -19,11 +21,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private friendRequests!: FriendRequest[];
   private friendRequestsSubscription!: Subscription;
+  searchControl = new FormControl('');
+  filteredAccounts: any[] = [];
 
   constructor(
     public popoverController: PopoverController,
     private authService: AuthService,
-    public connectionProfileService: ConnectionProfileService
+    public connectionProfileService: ConnectionProfileService,
+    private accountService: AccountService
   ) {}
 
   ngOnInit() {
@@ -52,6 +57,23 @@ export class HeaderComponent implements OnInit, OnDestroy {
           (friendRequest: FriendRequest) => friendRequest.status === 'pending'
         );
       });
+
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((query) => this.accountService.searchAccounts(query))
+      )
+      .subscribe((accounts) => {
+        this.filteredAccounts = accounts;
+      });
+  }
+
+  selectAccount(account: any) {
+    console.log('Selected account:', account);
+  }
+
+  async onSearchEnter() {
+    // Handle enter logic, e.g., show modal
   }
 
   async presentPopover(ev: any) {

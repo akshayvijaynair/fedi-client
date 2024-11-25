@@ -5,13 +5,14 @@
         @for (post of allLoadedPosts; track post.id) {
           <ion-card>
             <ion-grid>
-              <ion-row class="">
-                <ion-col size="auto" class="ion-padding">
+              <!-- Post Header -->
+              <ion-row>
+                <ion-col size="auto" class="">
                   <ion-avatar
                     style="cursor: pointer"
                     [routerLink]="['/', 'home', post.author.id]"
                   >
-                    <ion-img [src]="$any(post).fullImagePath"></ion-img>
+                    <ion-img [src]="post.author.icon?.url || 'assets/resources/icon.png'"></ion-img>
                   </ion-avatar>
                 </ion-col>
                 <ion-col>
@@ -23,7 +24,7 @@
                     {{ post.author.firstName }} {{ post.author.lastName }}
                   </div>
                   <div class="meta-data">
-                    1d<ion-icon name="ellipse"></ion-icon> Edited
+                    {{ post.createdAt | date: 'short' }}
                     <ion-icon name="ellipse"></ion-icon>
                     <ion-icon color="dark" name="globe-outline"></ion-icon>
                   </div>
@@ -47,7 +48,21 @@
                   ></ion-icon>
                 </ion-col>
               </ion-row>
-              <p class="post-body">{{ post.body }}</p>
+
+              <!-- Post Body -->
+              <p class="post-body">
+                {{ post.object?.content || post.body }}
+              </p>
+
+              <!-- Post Attachments -->
+              <!--@if (post.object && post.object.attachment?.length > 0){
+                <ion-row>
+                  <ion-col *ngFor="let attachment of post.object.attachment">
+                    <ion-img [src]="attachment.url" [alt]="attachment.name || 'Attachment'"></ion-img>
+                  </ion-col>
+                </ion-row>
+              }-->
+              <!-- Post Actions -->
               <ion-row>
                 <ion-button color="medium" fill="clear">
                   <ion-icon name="thumbs-up-outline"></ion-icon>
@@ -71,6 +86,7 @@
         }
       </ion-list>
 
+      <!-- Infinite Scroll -->
       <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
@@ -82,6 +98,8 @@
     <div class="hide-scroll"></div>
   </div>
 } @else {
-  <div>No Posts. Get Connecting</div>
+  <div class="no-posts-container">
+    <ion-icon name="chatbubble-ellipses-outline" size="large"></ion-icon>
+    <p>No Posts Yet. Start Connecting and Sharing!</p>
+  </div>
 }
-

@@ -19,19 +19,19 @@ export class AuthPage {
 
 
   onSubmit() {
-    const { username, password } = this.form?.value;
-    if (!username || !password) return;
+    const { email, password } = this.form?.value;
+    if (!email || !password) return;
 
     if (this.submissionType === 'login') {
-      return this.authService.login(username, password).subscribe(() => {
+      return this.authService.login(email, password).subscribe(() => {
         this.router.navigateByUrl('/home');
       });
     } else {
       // if (this.submissionType === 'join')
-      const { firstName, lastName, email } = this.form?.value;
-      if (!firstName || !lastName) return;
+      const { name } = this.form?.value;
+      if (!name) return;
 
-      const newUser: NewUser = { email, firstName, lastName, username, password };
+      const newUser: NewUser = { name, email, password };
 
       return this.authService.register(newUser).subscribe(() => {
         this.toggleText();

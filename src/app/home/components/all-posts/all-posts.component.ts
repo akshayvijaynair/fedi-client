@@ -103,6 +103,12 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   loadData(event: any) {
+    setTimeout(() => {
+      // Fetch new data (simulate API call)
+      const newPosts = [...this.allLoadedPosts]; // Add logic to load actual data
+      this.allLoadedPosts.push(...newPosts);
+      event.target.complete();
+    }, 500);
     this.getPosts(true, event);
   }
 

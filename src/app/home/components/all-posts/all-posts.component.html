@@ -1,27 +1,22 @@
 @if (allLoadedPosts.length > 0) {
   <div class="all-posts-container">
-    <ion-content>
+    <ion-content [fullscreen]="true">
       <ion-list>
         @for (post of allLoadedPosts; track post.id) {
           <ion-card>
             <ion-grid>
-              <!-- Post Header -->
               <ion-row>
-                <ion-col size="auto" class="">
-                  <ion-avatar
-                    style="cursor: pointer"
-                    [routerLink]="['/', 'home', post.author.id]"
-                  >
-                    <ion-img [src]="post.author.icon?.url || 'assets/resources/icon.png'"></ion-img>
+                <ion-col size="auto">
+                  <ion-avatar [routerLink]="['/', 'home', post.author.id]">
+                    <ion-img [src]="'assets/resources/icon.png'"></ion-img>
                   </ion-avatar>
                 </ion-col>
                 <ion-col>
                   <div
-                    style="cursor: pointer"
                     [routerLink]="['/', 'home', post.author.id]"
                     class="full-name"
                   >
-                    {{ post.author.firstName }} {{ post.author.lastName }}
+                    {{ post.author.name }}
                   </div>
                   <div class="meta-data">
                     {{ post.createdAt | date: 'short' }}
@@ -31,38 +26,23 @@
                 </ion-col>
                 <ion-col
                   *ngIf="(userId$ | async) === post.author.id"
-                  style="margin-top: -32px"
                   class="ion-text-right"
                 >
                   <ion-icon
                     (click)="presentUpdateModal(post.id)"
-                    style="font-size: 18px; cursor: pointer"
                     color="dark"
                     name="create-outline"
                   ></ion-icon>
                   <ion-icon
                     (click)="deletePost(post.id)"
-                    style="font-size: 18px; cursor: pointer"
                     color="danger"
                     name="trash-outline"
                   ></ion-icon>
                 </ion-col>
               </ion-row>
-
-              <!-- Post Body -->
               <p class="post-body">
                 {{ post.object?.content || post.body }}
               </p>
-
-              <!-- Post Attachments -->
-              <!--@if (post.object && post.object.attachment?.length > 0){
-                <ion-row>
-                  <ion-col *ngFor="let attachment of post.object.attachment">
-                    <ion-img [src]="attachment.url" [alt]="attachment.name || 'Attachment'"></ion-img>
-                  </ion-col>
-                </ion-row>
-              }-->
-              <!-- Post Actions -->
               <ion-row>
                 <ion-button color="medium" fill="clear">
                   <ion-icon name="thumbs-up-outline"></ion-icon>
@@ -91,11 +71,9 @@
         <ion-infinite-scroll-content
           loadingSpinner="bubbles"
           loadingText="Loading more data..."
-        >
-        </ion-infinite-scroll-content>
+        ></ion-infinite-scroll-content>
       </ion-infinite-scroll>
     </ion-content>
-    <div class="hide-scroll"></div>
   </div>
 } @else {
   <div class="no-posts-container">

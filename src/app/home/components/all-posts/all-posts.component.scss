@@ -1,62 +1,52 @@
 .all-posts-container {
   display: flex;
   flex-direction: column;
+  margin: 0 2rem 0 2rem;
   flex-grow: 1;
-  overflow: auto; // Ensure content can scroll
+  height: 100vh; // Ensures it takes the full viewport height
 
   ion-content {
-    height: auto; // Let content adjust dynamically
+    flex-grow: 1; // Make it take the remaining space
+    overflow: auto; // Enable scrolling for the content
     display: flex;
     flex-direction: column;
 
     ion-list {
-      background-color: var(--ion-color-tertiary, #FFF); // Add background for contrast
-      padding-top: 0;
+      flex-grow: 1; // Allow the list to grow
+      overflow: auto; // Enable scrolling inside the list
+      padding: 0;
 
       ion-card {
-        background-color: var(--ion-color-light, #ffffff); // Explicit background
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Add light shadow
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         border: 1px solid #e1e1e1;
+        padding: 0 2rem 0 2rem;
         width: 100%;
-
-        .full-name {
-          font-weight: 500;
-        }
-
-        .role {
-          font-size: var(--ion-default-font);
-          margin-top: 2px;
-          margin-bottom: 1px;
-        }
-
-        .meta-data {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          font-size: var(--ion-default-font);
-          width: 10rem;
-
-          ion-icon[name="ellipse"] {
-            font-size: 4px;
-          }
-        }
+        margin: 0 auto 1rem auto;
 
         .post-body {
           margin: 0;
-          padding: 0 16px;
+          padding: 0;
+        }
+
+        ion-grid {
+          width: 100%; // Prevent the grid from causing overflow
+
+          ion-row {
+            width: 100%; // Ensure rows don't exceed container width
+          }
         }
       }
 
       ion-avatar {
-        width: 4rem; // Adjusted size for better fit
-        height: 4rem;
+        width: 3rem;
+        height: 3rem;
         overflow: hidden;
       }
-    }
-  }
 
-  .hide-scroll {
-    height: calc(100vh - 320px);
-    border-right: 16px solid #f3f2ef;
+      .hide-scroll {
+        height: calc(100vh - 320px);
+        border-right: 16px solid #f3f2ef;
+      }
+    }
   }
 }

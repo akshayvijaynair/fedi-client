@@ -46,7 +46,7 @@ export class AuthService {
   get userFullName(): Observable<string> {
     return this.user$.asObservable().pipe(
       switchMap((user: User | null) => {
-        const fullName = user ? `${user.firstName} ${user.lastName}` : '';
+        const fullName = user ? `${user.name}` : '';
         return of(fullName);
       })
     );
@@ -120,9 +120,7 @@ export class AuthService {
   register(newUser: NewUser): Observable<User> {
     // Only send the basic user data
     const basicUserDetails = {
-      userName: newUser.username,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
+      name: newUser.name,
       email: newUser.email,
       password: newUser.password
     };
@@ -136,7 +134,10 @@ export class AuthService {
     return this.http
       .post<{ token: string }>(
         `${environment.baseApiUrl}/auth/login`,
-        { email, password }
+        {
+          username: email,
+          password: password
+        }
       )
       .pipe(
         take(1),

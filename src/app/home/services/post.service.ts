@@ -43,8 +43,7 @@ export class PostService {
         createdAt: new Date('2024-11-24T08:00:00Z'),
         author: {
           id: 'https://example.com/actors/user1',
-          firstName: 'Alice',
-          lastName: 'Doe',
+          name: 'Alice Dow',
           email: 'alice@example.com',
           type: 'Person',
           inbox: 'https://example.com/actors/user1/inbox',
@@ -78,8 +77,7 @@ export class PostService {
         createdAt: new Date('2024-11-23T14:30:00Z'),
         author: {
           id: 'https://example.com/actors/user2',
-          firstName: 'Bob',
-          lastName: 'Smith',
+          name:"Bob",
           email: 'bob@example.com',
           type: 'Person',
           inbox: 'https://example.com/actors/user2/inbox',

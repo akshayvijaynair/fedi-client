@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PopoverController } from '@ionic/angular';
+import {ModalController, PopoverController} from '@ionic/angular';
 import {debounceTime, Subscription} from 'rxjs';
 import {filter, switchMap, take, tap} from 'rxjs/operators';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -9,6 +9,8 @@ import { FriendRequestsPopoverComponent } from './friend-requests-popover/friend
 import { PopoverComponent } from './popover/popover.component';
 import {FormControl} from "@angular/forms";
 import {AccountService} from "../../services/account-search.service";
+import {ActorListModalComponent} from "../connection-profile/modal/actor-list-modal.component";
+import {User} from "../../../auth/models/user.model";
 
 @Component({
   selector: 'app-header',
@@ -22,13 +24,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private friendRequests!: FriendRequest[];
   private friendRequestsSubscription!: Subscription;
   searchControl = new FormControl('');
-  filteredAccounts: any[] = [];
+  filteredAccounts: User[] = [];
 
   constructor(
     public popoverController: PopoverController,
     private authService: AuthService,
     public connectionProfileService: ConnectionProfileService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private modalController: ModalController,
   ) {}
 
   ngOnInit() {
@@ -57,15 +60,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
           (friendRequest: FriendRequest) => friendRequest.status === 'pending'
         );
       });
-
-    this.searchControl.valueChanges
-      .pipe(
-        debounceTime(300),
-        switchMap((query) => this.accountService.searchAccounts(query))
-      )
-      .subscribe((accounts) => {
-        this.filteredAccounts = accounts;
-      });
   }
 
   selectAccount(account: any) {
@@ -74,6 +68,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   async onSearchEnter() {
     // Handle enter logic, e.g., show modal
+  }
+
+  async openSearchModal() {
+    this.accountService.searchAccounts(this.searchControl.value).subscribe(
+      async (data: User[]) => {
+        const modal = await this.modalController.create({
+          component: ActorListModalComponent,
+          componentProps: {title: 'Search Results', accounts: data},
+        });
+        return await modal.present();
+      }
+    )
+
   }
 
   async presentPopover(ev: any) {

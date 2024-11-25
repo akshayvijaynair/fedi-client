@@ -117,7 +117,7 @@ export class AuthService {
   register(newUser: NewUser): Observable<User> {
     // Only send the basic user data
     const basicUserDetails = {
-      userName: newUser.userName,
+      userName: newUser.username,
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email: newUser.email,

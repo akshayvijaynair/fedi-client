@@ -7,7 +7,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
+  password?: string;
   name?: string;
   type?: "Person";  // Standard type for individual users
   inbox?: string;   // URL for the user's inbox

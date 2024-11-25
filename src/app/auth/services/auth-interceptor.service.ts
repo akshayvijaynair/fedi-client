@@ -26,7 +26,8 @@ export class AuthInterceptorService implements HttpInterceptor {
         const token = data?.value;
         let headers = req.headers
           .set('Content-Type', 'application/json')
-          .set('Accept', 'application/ld+json'); // Set JSON-LD headers globally
+          .set('Accept', 'application/ld+json') // Set JSON-LD headers globally
+          .set('ngrok-skip-browser-warning', 'true');
 
        if (token) {
           headers = headers.set('Authorization', 'Bearer ' + token); // Add Authorization if token exists

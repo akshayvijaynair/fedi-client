@@ -1,6 +1,6 @@
 export interface NewUser {
   id?: string;  // Server-generated or client-generated URI
-  userName: string;
+  username: string;
   firstName: string;
   lastName: string;
   email: string;

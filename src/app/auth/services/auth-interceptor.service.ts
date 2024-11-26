@@ -26,7 +26,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         const token = data?.value;
         let headers = req.headers
           .set('Content-Type', 'application/json')
-          .set('Accept', 'application/ld+json') // Set JSON-LD headers globally
+          .set('Accept', 'application/json') // Set JSON-LD headers globally
           .set('ngrok-skip-browser-warning', 'true');
 
        if (token) {

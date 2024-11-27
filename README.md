@@ -21,7 +21,6 @@ This repository contains an Ionic application built using the Angular Framework.
   * [Troubleshooting](#troubleshooting)
 <!-- TOC -->
 
-
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:

@@ -9,7 +9,7 @@ import { FriendRequestsPopoverComponent } from './friend-requests-popover/friend
 import { PopoverComponent } from './popover/popover.component';
 import {FormControl} from "@angular/forms";
 import {AccountService} from "../../services/account-search.service";
-import {ActorListModalComponent} from "../connection-profile/modal/actor-list-modal.component";
+import {ActorSearchModalComponent} from "./modal/actor-search-modal.component";
 import {User} from "../../../auth/models/user.model";
 
 @Component({
@@ -21,7 +21,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userFullImagePath!: string;
   private userImagePathSubscription!: Subscription;
 
-  private friendRequests!: FriendRequest[];
+  protected friendRequests: any = null;
   private friendRequestsSubscription!: Subscription;
   searchControl = new FormControl('');
   filteredAccounts: User[] = [];
@@ -40,9 +40,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         tap(({ imageName }) => {
-          const defaultImagePath = 'blank-profile-picture.png';
+          const defaultImagePath = 'assets/resources/icon.png';
           this.authService
-            .updateUserImagePath(imageName || defaultImagePath)
+            .updateUserImagePath(defaultImagePath)
             .subscribe();
         })
       )
@@ -53,12 +53,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.userFullImagePath = fullImagePath;
       });
 
-    this.friendRequestsSubscription = this.connectionProfileService
-      .getFriendRequests()
-      .subscribe((friendRequests: FriendRequest[]) => {
-        this.connectionProfileService.friendRequests = friendRequests.filter(
-          (friendRequest: FriendRequest) => friendRequest.status === 'pending'
-        );
+    this.friendRequestsSubscription =
+      this.connectionProfileService.getFriendRequests().subscribe(
+        (data: any) => {
+          this.friendRequests = data;
       });
   }
 
@@ -74,7 +72,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.accountService.searchAccounts(this.searchControl.value).subscribe(
       async (data: User[]) => {
         const modal = await this.modalController.create({
-          component: ActorListModalComponent,
+          component: ActorSearchModalComponent,
           componentProps: {title: 'Search Results', accounts: data},
         });
         return await modal.present();
@@ -84,6 +82,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   async presentPopover(ev: any) {
+    await this.popoverController.dismiss().catch(() => null);
     const popover = await this.popoverController.create({
       component: PopoverComponent,
       cssClass: 'my-custom-class',
@@ -93,20 +92,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
     await popover.present();
 
     const { role } = await popover.onDidDismiss();
-    console.log('onDidDismiss resolved with role', role);
   }
 
   async presentFriendRequestPopover(ev: any) {
-    const popover = await this.popoverController.create({
+    await this.modalController.dismiss().catch(() => null);
+    const popover = await this.modalController.create({
       component: FriendRequestsPopoverComponent,
-      cssClass: 'my-custom-class',
-      event: ev,
-      showBackdrop: false,
+      showBackdrop: true,
+      componentProps: {title: 'Follow Requests'},
     });
     await popover.present();
 
     const { role } = await popover.onDidDismiss();
-    console.log('onDidDismiss resolved with role', role);
+    console.log('Popover dismissed with role:', role);
   }
 
   ngOnDestroy() {

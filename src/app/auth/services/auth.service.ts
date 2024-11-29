@@ -38,14 +38,17 @@ export class AuthService {
   }
 
   get userId(): Observable<string> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User | null) => of(user?.id ?? "")) // Default to `0` or another fallback if `user` is `null`
-    );
+    return from(
+      Preferences.get({
+        key: 'email',
+      })
+    ).pipe(map((data) => data?.value as string ));
   }
 
   get userFullName(): Observable<string> {
     return this.user$.asObservable().pipe(
       switchMap((user: User | null) => {
+        console.log('getUserFullName: ', user);
         const fullName = user ? `${user.name}` : '';
         return of(fullName);
       })
@@ -62,10 +65,14 @@ export class AuthService {
     );
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.isTokenInStorage().subscribe((isLoggedIn) => {
+      console.log('User restored from token: ', isLoggedIn);
+    });
+  }
 
   getDefaultFullImagePath(): string {
-    return 'http://localhost:3000/api/feed/image/blank-profile-picture.png';
+    return 'assets/resources/icon.png';
   }
 
   getFullImagePath(imageName: string): string {
@@ -82,18 +89,17 @@ export class AuthService {
       .pipe(take(1));
   }
 
-  updateUserImagePath(imagePath: string): Observable<User | null> {
+  updateUserImagePath(imagePath: string): Observable<User | string> {
     return this.user$.pipe(
       take(1 ),
       map((user: User | null) => {
-        if(user){
-          //user.imagePath = imagePath;
+        if(user && user.icon && user.icon.url){
+          user.icon.url = imagePath;
           this.user$.next(user);
           return user;
         } else {
-          return null;
+          return '';
         }
-
       })
     );
   }
@@ -145,6 +151,10 @@ export class AuthService {
           Preferences.set({
             key: 'token',
             value: response.token,
+          });
+          Preferences.set({
+            key: 'email',
+            value: email,
           });
           const decodedToken: UserResponse = jwtDecode(response.token);
           console.log(decodedToken);

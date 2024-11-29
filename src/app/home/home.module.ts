@@ -18,6 +18,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { FriendRequestsPopoverComponent } from './components/header/friend-requests-popover/friend-requests-popover.component';
 import { ChatComponent } from './components/chat/chat.component';
 import {ActorListModalComponent} from "./components/connection-profile/modal/actor-list-modal.component";
+import {ActorSearchModalComponent} from './components/header/modal/actor-search-modal.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule, ReactiveFormsModule],
@@ -32,6 +33,7 @@ import {ActorListModalComponent} from "./components/connection-profile/modal/act
     TabsComponent,
     ConnectionProfileComponent,
     ActorListModalComponent,
+    ActorSearchModalComponent,
     PopoverComponent,
     UserProfileComponent,
     FriendRequestsPopoverComponent,

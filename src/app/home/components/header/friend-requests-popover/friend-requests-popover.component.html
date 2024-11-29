@@ -1,43 +1,47 @@
-<ion-card *ngIf="this.connectionProfileService?.friendRequests">
-  <ion-card-header>
-    <ion-grid>
-      <ng-container
-        *ngFor="
-          let friendRequest of this.connectionProfileService.friendRequests
-        "
-      >
-        <ion-row class="ion-align-items-center ion-justify-content-center">
-          <ion-col size="auto">
-            <ion-avatar>
-              <ion-img [src]="$any(friendRequest).fullImagePath"></ion-img>
-            </ion-avatar>
-          </ion-col>
-          <ion-col>
-            <ion-card-title>
-              {{ $any(friendRequest).creator.firstName }}
-              {{ $any(friendRequest).creator.lastName }}
-            </ion-card-title>
-          </ion-col>
-        </ion-row>
-        <ion-row>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>FRIEND REQUESTS</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    @for (friendRequest of friendRequests; track friendRequest.creatorId) {
+      <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-col size="auto">
+       <!-- <ion-avatar>
+          <ion-img [src]="friendRequest."></ion-img>
+        </ion-avatar>-->
+      </ion-col>
+        <ion-col>
+          <ion-card-title>
+            {{ friendRequest.summary }}
+          </ion-card-title>
+        </ion-col>
+        <ion-col>
           <ion-button
-            (click)="respondToFriendRequest(friendRequest.id, 'accepted')"
+            (click)="respondToFriendRequest(friendRequest.creatorId, 'accepted')"
             expand="block"
             size="small"
             fill="outline"
             color="primary"
-            >Accept</ion-button
+          >Accept</ion-button
           >
           <ion-button
-            (click)="respondToFriendRequest(friendRequest.id, 'declined')"
+            (click)="respondToFriendRequest(friendRequest.creatorId, 'declined')"
             expand="block"
             size="small"
             fill="outline"
             color="danger"
-            >Decline</ion-button
+          >Decline</ion-button
           >
-        </ion-row>
-      </ng-container>
-    </ion-grid>
-  </ion-card-header>
-</ion-card>
+        </ion-col>
+      </ion-row>
+    }
+  </ion-list>
+</ion-content>

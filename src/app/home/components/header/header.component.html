@@ -18,24 +18,23 @@
           <ion-icon name="home"></ion-icon>
         </ion-button>
         <ion-button (click)="
-              this.connectionProfileService.friendRequests.length > 0 &&
-                presentFriendRequestPopover($event)
+              this.friendRequests?.length > 0 && presentFriendRequestPopover($event)
             ">
           <ion-icon name="people"></ion-icon>
           <ion-badge
             color="danger"
             class="badge-danger"
           >
-            {{ this.connectionProfileService.friendRequests?.length || 0 }}
+            {{ this.friendRequests?.length || 0 }}
           </ion-badge>
         </ion-button>
-        <ion-button>
+       <!-- <ion-button>
           <ion-icon name="chatbox-ellipses"></ion-icon>
         </ion-button>
         <ion-button>
           <ion-icon name="notifications"></ion-icon>
           <ion-badge color="danger" class="badge-danger">2</ion-badge>
-        </ion-button>
+        </ion-button>-->
         <ion-button class="popover-menu cursor-pointer"
                     (click)="presentPopover($event)">
           <ion-avatar>

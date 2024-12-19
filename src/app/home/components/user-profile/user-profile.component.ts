@@ -13,4 +13,5 @@ export class UserProfileComponent {
   onCreatePost(body: string) {
     this.body = body;
   }
+
 }

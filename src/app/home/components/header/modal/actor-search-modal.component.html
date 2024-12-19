@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ title }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let account of accounts">
+      <ion-avatar slot="start">
+        <img [src]="account.icon || 'assets/resources/icon.png'" alt="{{ account.name }}" />
+      </ion-avatar>
+      <ion-label>
+        <h2>{{ account.name }}</h2>
+        <p>{{ account.type }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button color="primary" (click)="makeFollowRequest(account.name)">Follow</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>

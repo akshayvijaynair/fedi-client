@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content  [fullscreen]="true" >
   <div class="title-container">
     <ion-text color="primary" class="linkedin-text">CTRL</ion-text>
     <ion-icon
@@ -13,12 +13,12 @@
     <ion-card>
       <ng-container *ngIf="submissionType === 'join'">
         <ion-item>
-          <ion-label position="floating">Username</ion-label>
+          <ion-label position="floating">Name</ion-label>
           <ion-input
             #userNameInput="ngModel"
             ngModel
             type="text"
-            name="userName"
+            name="name"
             required
           ></ion-input>
         </ion-item>
@@ -28,7 +28,7 @@
         >Please enter a unique username.</ion-text
         >
       </ng-container>
-      <ng-container *ngIf="submissionType === 'join'">
+     <!-- <ng-container *ngIf="submissionType === 'join'">
         <ion-item>
           <ion-label position="floating">First name</ion-label>
           <ion-input
@@ -61,7 +61,7 @@
           *ngIf="!lastNameInput.valid && lastNameInput.touched"
           >Please enter your last name.</ion-text
         >
-      </ng-container>
+      </ng-container>-->
       <ion-item>
         <ion-label position="floating">Email</ion-label>
         <ion-input

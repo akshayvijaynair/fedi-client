@@ -1,87 +1,87 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, UrlSegment } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
-import { User } from 'src/app/auth/models/user.model';
-import {
-  FriendRequestStatus,
-  FriendRequest_Status,
-} from '../../models/FriendRequest';
-import { BannerColorService } from '../../services/banner-color.service';
-import { ConnectionProfileService } from '../../services/connection-profile.service';
+import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import {ActorListModalComponent} from "./modal/actor-list-modal.component";
+import {BannerColorService} from "../../services/banner-color.service";
+
+// Mock follower/following data
+const mockFollowers = [
+  { id: 'https://example.com/actors/user1', name: 'Alice', type: 'Person', icon: 'assets/resources/icon.png' },
+  { id: 'https://example.com/actors/user2', name: 'Bob', type: 'Person', icon: null },
+];
+
+const mockFollowing = [
+  { id: 'https://example.com/actors/user3', name: 'Charlie', type: 'Person', icon: 'assets/resources/icon.png' },
+  { id: 'https://example.com/actors/user4', name: 'Dana', type: 'Person', icon: 'assets/resources/icon.png' },
+];
 
 @Component({
   selector: 'app-connection-profile',
   templateUrl: './connection-profile.component.html',
   styleUrls: ['./connection-profile.component.scss'],
 })
-export class ConnectionProfileComponent implements OnInit, OnDestroy {
-  user!: User;
-  friendRequestStatus!: FriendRequest_Status;
-  friendRequestStatusSubscription$!: Subscription;
-  userSubscription$!: Subscription;
+export class ConnectionProfileComponent {
+  public actor = {
+    id: "https://example.com/actors/johndoe",
+    type: "Person",
+    name: "John Doe",
+    summary: "A passionate Full Stack Developer exploring the fediverse.",
+    icon: null,
+    inbox: "https://example.com/actors/johndoe/inbox",
+    outbox: "https://example.com/actors/johndoe/outbox",
+    followers: "https://example.com/actors/johndoe/followers",
+    following: "https://example.com/actors/johndoe/following",
+    followersCount: 123,
+    followingCount: 89,
+  };
+
+  isFollowing = false;
 
   constructor(
-    public bannerColorService: BannerColorService,
-    private route: ActivatedRoute,
-    public connectionProfileService: ConnectionProfileService
-  ) {}
+    private modalController: ModalController,
+    public bannerColorService: BannerColorService,) {}
 
-  ngOnInit() {
-    this.friendRequestStatusSubscription$ = this.getFriendRequestStatus()
-      .pipe(
-        tap((friendRequestStatus: FriendRequestStatus) => {
-          this.friendRequestStatus = friendRequestStatus.status?? "pending";
-          this.userSubscription$ = this.getUser().subscribe((user: User) => {
-            this.user = user;
-            const imgPath = user.icon && (user.icon.url ?? 'blank-profile-picture.png');
-            // @ts-ignore
-            this.user.icon.url =
-              'http://localhost:3000/api/feed/image/' + imgPath;
-          });
-        })
-      )
-      .subscribe();
+  async fetchInbox() {
+    // Simulate an API call
+    console.log('Fetching inbox:', this.actor.inbox);
+    // Replace with actual HTTP request
   }
 
-  getUser(): Observable<User> {
-    return this.getUserIdFromUrl().pipe(
-      switchMap((userId: number) => {
-        return this.connectionProfileService.getConnectionUser(userId);
-      })
-    );
+  async fetchOutbox() {
+    // Simulate an API call
+    console.log('Fetching outbox:', this.actor.outbox);
+    // Replace with actual HTTP request
   }
 
-  addUser(): Subscription {
-    this.friendRequestStatus = 'pending';
-    return this.getUserIdFromUrl()
-      .pipe(
-        switchMap((userId: number) => {
-          return this.connectionProfileService.addConnectionUser(userId);
-        })
-      )
-      .pipe(take(1))
-      .subscribe();
+  async openFollowersModal() {
+    const modal = await this.modalController.create({
+      component: ActorListModalComponent,
+      componentProps: { title: 'Followers', accounts: mockFollowers },
+    });
+    return await modal.present();
   }
 
-  getFriendRequestStatus(): Observable<FriendRequestStatus> {
-    return this.getUserIdFromUrl().pipe(
-      switchMap((userId: number) => {
-        return this.connectionProfileService.getFriendRequestStatus(userId);
-      })
-    );
+  async openFollowingModal() {
+    const modal = await this.modalController.create({
+      component: ActorListModalComponent,
+      componentProps: { title: 'Following', accounts: mockFollowing },
+    });
+    return await modal.present();
   }
 
-  ngOnDestroy(): void {
-    this.userSubscription$.unsubscribe();
-    this.friendRequestStatusSubscription$.unsubscribe();
+  followActor() {
+    console.log('Followed Actor:', this.actor.id);
+    this.isFollowing = true;
+    // Replace with actual HTTP request
   }
 
-  private getUserIdFromUrl(): Observable<number> {
-    return this.route.url.pipe(
-      map((urlSegment: UrlSegment[]) => {
-        return +urlSegment[0].path;
-      })
-    );
+  unfollowActor() {
+    console.log('Unfollowed Actor:', this.actor.id);
+    this.isFollowing = false;
+    // Replace with actual HTTP request
+  }
+
+  setFallbackImage(event: Event) {
+    const target = event.target as HTMLImageElement;
+    target.src = 'assets/resources/icon.png'; // Path to your fallback image
   }
 }

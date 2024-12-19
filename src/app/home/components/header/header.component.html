@@ -17,9 +17,7 @@
         <ion-button class="cursor-pointer" [routerLink]="['/home']">
           <ion-icon name="home"></ion-icon>
         </ion-button>
-        <ion-button (click)="
-              this.friendRequests?.length > 0 && presentFriendRequestPopover($event)
-            ">
+        <ion-button (click)="this.friendRequests?.length > 0 && presentFriendRequestPopover($event)">
           <ion-icon name="people"></ion-icon>
           <ion-badge
             color="danger"

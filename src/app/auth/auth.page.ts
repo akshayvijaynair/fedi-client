@@ -32,7 +32,6 @@ export class AuthPage {
       if (!name) return;
 
       const newUser: NewUser = { name, email, password };
-
       return this.authService.register(newUser).subscribe(() => {
         this.toggleText();
       });

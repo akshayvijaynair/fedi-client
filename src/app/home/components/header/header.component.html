@@ -5,35 +5,34 @@
           <ion-icon color="primary" class="logo" name="logo-ionic"></ion-icon>
         </ion-button>
         <ion-searchbar
+          [formControl]="searchControl"
+          (keydown.enter)="openSearchModal()"
+          show-clear-button="focus" value="Show on Focus"
           color="secondary"
           class="full-width"
-          placeholder="Search"
-        >
+          placeholder="Search">
         </ion-searchbar>
       </ion-buttons>
       <ion-buttons slot="end" class="ion-hide-md-down">
         <ion-button class="cursor-pointer" [routerLink]="['/home']">
           <ion-icon name="home"></ion-icon>
         </ion-button>
-        <ion-button (click)="
-              this.connectionProfileService.friendRequests.length > 0 &&
-                presentFriendRequestPopover($event)
-            ">
+        <ion-button (click)="this.friendRequests?.length > 0 && presentFriendRequestPopover($event)">
           <ion-icon name="people"></ion-icon>
           <ion-badge
             color="danger"
             class="badge-danger"
           >
-            {{ this.connectionProfileService.friendRequests?.length || 0 }}
+            {{ this.friendRequests?.length || 0 }}
           </ion-badge>
         </ion-button>
-        <ion-button>
+       <!-- <ion-button>
           <ion-icon name="chatbox-ellipses"></ion-icon>
         </ion-button>
         <ion-button>
           <ion-icon name="notifications"></ion-icon>
           <ion-badge color="danger" class="badge-danger">2</ion-badge>
-        </ion-button>
+        </ion-button>-->
         <ion-button class="popover-menu cursor-pointer"
                     (click)="presentPopover($event)">
           <ion-avatar>

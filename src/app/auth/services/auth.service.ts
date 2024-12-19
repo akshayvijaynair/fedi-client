@@ -38,15 +38,18 @@ export class AuthService {
   }
 
   get userId(): Observable<string> {
-    return this.user$.asObservable().pipe(
-      switchMap((user: User | null) => of(user?.id ?? "")) // Default to `0` or another fallback if `user` is `null`
-    );
+    return from(
+      Preferences.get({
+        key: 'email',
+      })
+    ).pipe(map((data) => data?.value as string ));
   }
 
   get userFullName(): Observable<string> {
     return this.user$.asObservable().pipe(
       switchMap((user: User | null) => {
-        const fullName = user ? `${user.firstName} ${user.lastName}` : '';
+        console.log('getUserFullName: ', user);
+        const fullName = user ? `${user.name}` : '';
         return of(fullName);
       })
     );
@@ -62,10 +65,14 @@ export class AuthService {
     );
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    this.isTokenInStorage().subscribe((isLoggedIn) => {
+      console.log('User restored from token: ', isLoggedIn);
+    });
+  }
 
   getDefaultFullImagePath(): string {
-    return 'http://localhost:3000/api/feed/image/blank-profile-picture.png';
+    return 'assets/resources/icon.png';
   }
 
   getFullImagePath(imageName: string): string {
@@ -82,18 +89,17 @@ export class AuthService {
       .pipe(take(1));
   }
 
-  updateUserImagePath(imagePath: string): Observable<User | null> {
+  updateUserImagePath(imagePath: string): Observable<User | string> {
     return this.user$.pipe(
       take(1 ),
       map((user: User | null) => {
-        if(user){
-          //user.imagePath = imagePath;
+        if(user && user.icon && user.icon.url){
+          user.icon.url = imagePath;
           this.user$.next(user);
           return user;
         } else {
-          return null;
+          return '';
         }
-
       })
     );
   }
@@ -120,23 +126,24 @@ export class AuthService {
   register(newUser: NewUser): Observable<User> {
     // Only send the basic user data
     const basicUserDetails = {
-      userName: newUser.userName,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
+      name: newUser.name,
       email: newUser.email,
       password: newUser.password
     };
 
     return this.http
-      .post<NewUser>(`${environment.baseApiUrl}/auth/register`, basicUserDetails)
+      .post<NewUser>(`${environment.baseApiUrl}/v1/auth/register`, basicUserDetails)
       .pipe(take(1));
   }
 
   login(email: string, password: string): Observable<{ token: string }> {
     return this.http
       .post<{ token: string }>(
-        `${environment.baseApiUrl}/auth/login`,
-        { email, password }
+        `${environment.baseApiUrl}/v1/auth/login`,
+        {
+          username: email,
+          password: password
+        }
       )
       .pipe(
         take(1),
@@ -144,6 +151,10 @@ export class AuthService {
           Preferences.set({
             key: 'token',
             value: response.token,
+          });
+          Preferences.set({
+            key: 'email',
+            value: email,
           });
           const decodedToken: UserResponse = jwtDecode(response.token);
           console.log(decodedToken);

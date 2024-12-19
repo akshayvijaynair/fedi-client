@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
@@ -17,9 +17,11 @@ import { PopoverComponent } from './components/header/popover/popover.component'
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { FriendRequestsPopoverComponent } from './components/header/friend-requests-popover/friend-requests-popover.component';
 import { ChatComponent } from './components/chat/chat.component';
+import {ActorListModalComponent} from "./components/connection-profile/modal/actor-list-modal.component";
+import {ActorSearchModalComponent} from './components/header/modal/actor-search-modal.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
+  imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule, ReactiveFormsModule],
   declarations: [
     HomePage,
     HeaderComponent,
@@ -30,6 +32,8 @@ import { ChatComponent } from './components/chat/chat.component';
     AllPostsComponent,
     TabsComponent,
     ConnectionProfileComponent,
+    ActorListModalComponent,
+    ActorSearchModalComponent,
     PopoverComponent,
     UserProfileComponent,
     FriendRequestsPopoverComponent,

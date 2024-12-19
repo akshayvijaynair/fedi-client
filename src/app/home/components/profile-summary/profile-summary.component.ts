@@ -48,8 +48,8 @@ export class ProfileSummaryComponent implements OnInit, OnDestroy {
     this.userSubscription = this.authService.userStream.subscribe(
       (user: User | null) => {
 
-        if (user && user?.firstName && user?.lastName) {
-          this.fullName = user.firstName + ' ' + user.lastName;
+        if (user && user?.name) {
+          this.fullName = user.name;
           this.fullName$.next(this.fullName);
         }
       }

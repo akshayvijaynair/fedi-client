@@ -84,6 +84,7 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
     this.postService
       .getSelectedPosts(this.queryParams)
       .subscribe((posts: Post[]) => {
+        console.log(posts);
         for (let postIndex = 0; postIndex < posts.length; postIndex++) {
           const doesAuthorHaveImage = !!posts[postIndex].author.icon?.url;
           let fullImagePath = this.authService.getDefaultFullImagePath();
@@ -95,16 +96,23 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
           posts[postIndex]['fullImagePath'] = fullImagePath;
           this.allLoadedPosts.push(posts[postIndex]);
         }
+        console.log('allPosts: ', this.allLoadedPosts)
         if (isInitialLoad) event.target.complete();
         this.skipPosts = this.skipPosts + 5;
       });
   }
 
   loadData(event: any) {
+    setTimeout(() => {
+      // Fetch new data (simulate API call)
+      const newPosts = [...this.allLoadedPosts]; // Add logic to load actual data
+      this.allLoadedPosts.push(...newPosts);
+      event.target.complete();
+    }, 500);
     this.getPosts(true, event);
   }
 
-  async presentUpdateModal(postId: number) {
+  async presentUpdateModal(postId: string) {
     const modal = await this.modalController.create({
       component: ModalComponent,
       cssClass: 'my-custom-class2',
@@ -120,18 +128,18 @@ export class AllPostsComponent implements OnInit, OnDestroy, OnChanges {
 
     const newPostBody = data.post.body;
     this.postService.updatePost(postId, newPostBody).subscribe(() => {
-      const postIndex = this.allLoadedPosts.findIndex(
+      /*const postIndex = this.allLoadedPosts.findIndex(
         (post: Post) => post.id === postId
       );
-      this.allLoadedPosts[postIndex].body = newPostBody;
+      this.allLoadedPosts[postIndex].body = newPostBody;*/
     });
   }
 
-  deletePost(postId: number) {
+  deletePost(postId: string) {
     this.postService.deletePost(postId).subscribe(() => {
-      this.allLoadedPosts = this.allLoadedPosts.filter(
+     /* this.allLoadedPosts = this.allLoadedPosts.filter(
         (post: Post) => post.id !== postId
-      );
+      );*/
     });
   }
 

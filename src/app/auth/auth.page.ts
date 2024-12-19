@@ -28,11 +28,10 @@ export class AuthPage {
       });
     } else {
       // if (this.submissionType === 'join')
-      const { firstName, lastName, userName } = this.form?.value;
-      if (!firstName || !lastName) return;
+      const { name } = this.form?.value;
+      if (!name) return;
 
-      const newUser: NewUser = { userName, firstName, lastName, email, password };
-
+      const newUser: NewUser = { name, email, password };
       return this.authService.register(newUser).subscribe(() => {
         this.toggleText();
       });

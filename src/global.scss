@@ -25,17 +25,20 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+html {
+  font-size: 62.5%;
+}
+
 .my-custom-class .popover-content {
-  width: 300px;
+  width: 30rem;
   margin-top: 16px;
   --box-shadow: none;
   --background: none;
 }
 
 .my-custom-class2 {
-  --width: 552px;
-  --height: 400px;
-  margin-top: -100px;
+  --width: 55.2rem;
+  --height: auto;
   ion-grid {
     margin: 0;
     padding-bottom: 0;

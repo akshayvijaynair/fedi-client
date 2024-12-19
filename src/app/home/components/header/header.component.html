@@ -1,111 +1,52 @@
-<ion-header class="ion-container ion-no-border">
-  <ion-toolbar>
-    <div class="toolbar-wrapper">
-      <ion-buttons slot="start" class="ion-no-padding">
-        <ion-button style="cursor: pointer" [routerLink]="['/home']">
-          <ion-icon
-            color="primary"
-            class="linkedin-logo"
-            name="logo-ionic"
-          ></ion-icon>
+<ion-header>
+  <ion-toolbar class="toolbar-wrapper">
+      <ion-buttons slot="start">
+        <ion-button class="cursor-pointer" [routerLink]="['/home']">
+          <ion-icon color="primary" class="logo" name="logo-ionic"></ion-icon>
         </ion-button>
         <ion-searchbar
-          color="tertiary"
-          class="ion-hide-lg-down"
+          color="secondary"
+          class="full-width"
           placeholder="Search"
         >
         </ion-searchbar>
       </ion-buttons>
-
-      <ion-grid>
-        <ion-row class="ion-justify-content-end">
-          <ion-col
-            style="cursor: pointer"
-            [routerLink]="['/home']"
-            class="ion-hide-md-down"
-            size="auto"
-          >
-            <ion-icon name="home"></ion-icon>
-            <div>Home</div>
-          </ion-col>
-          <ion-col
-            (click)="
+      <ion-buttons slot="end" class="ion-hide-md-down">
+        <ion-button class="cursor-pointer" [routerLink]="['/home']">
+          <ion-icon name="home"></ion-icon>
+        </ion-button>
+        <ion-button (click)="
               this.connectionProfileService.friendRequests.length > 0 &&
                 presentFriendRequestPopover($event)
-            "
-            class="ion-hide-md-down"
-            size="auto"
+            ">
+          <ion-icon name="people"></ion-icon>
+          <ion-badge
+            color="danger"
+            class="badge-danger"
           >
-            <ion-icon name="people"></ion-icon>
-            <ion-badge
-              color="danger"
-              style="
-                position: absolute;
-                margin-left: -8px;
-                margin-top: -5px;
-                height: 16px;
-                width: 16px;
-                border-radius: 9999px;
-              "
-            >
-              {{ this.connectionProfileService.friendRequests?.length || 0 }}
-            </ion-badge>
-            <div>My Network</div>
-          </ion-col>
-          <ion-col
-            style="cursor: pointer"
-            [routerLink]="['/home/chat/connections']"
-            class="ion-hide-md-down"
-            size="auto"
-          >
-            <ion-icon name="chatbox-ellipses"></ion-icon>
-            <div>Messaging</div>
-          </ion-col>
-          <ion-col class="ion-hide-md-down" size="auto">
-            <ion-icon name="notifications"></ion-icon>
-            <ion-badge
-              color="danger"
-              style="
-                position: absolute;
-                margin-left: -10px;
-                margin-top: -5px;
-                height: 16px;
-                width: 16px;
-                border-radius: 9999px;
-              "
-            >
-              2
-            </ion-badge>
-            <div>Notifications</div>
-          </ion-col>
-          <ion-col
-            style="cursor: pointer"
-            class="popover-menu"
-            (click)="presentPopover($event)"
-            size="auto"
-          >
-            <ion-avatar>
-              <ion-img
-                *ngIf="userFullImagePath"
-                [src]="userFullImagePath"
-              ></ion-img>
-            </ion-avatar>
-            <div
-              style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-              "
-            >
-              Me
-              <ion-icon
-                style="font-size: 16px"
-                name="caret-down-outline"
-              ></ion-icon>
-            </div>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
+            {{ this.connectionProfileService.friendRequests?.length || 0 }}
+          </ion-badge>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="chatbox-ellipses"></ion-icon>
+        </ion-button>
+        <ion-button>
+          <ion-icon name="notifications"></ion-icon>
+          <ion-badge color="danger" class="badge-danger">2</ion-badge>
+        </ion-button>
+        <ion-button class="popover-menu cursor-pointer"
+                    (click)="presentPopover($event)">
+          <ion-avatar>
+            <ion-img
+              *ngIf="userFullImagePath"
+              [src]="userFullImagePath"
+            ></ion-img>
+          </ion-avatar>
+          <div class="header-avatar-container">
+            Me
+          </div>
+        </ion-button>
+      </ion-buttons>
   </ion-toolbar>
 </ion-header>
+

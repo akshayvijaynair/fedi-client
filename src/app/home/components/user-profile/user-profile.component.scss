@@ -1,31 +1,49 @@
-:host {
-  display: flex;
-  justify-content: flex-start;
-  min-height: 100vh;
-  flex-direction: column;
-}
-
 .content-container {
   display: flex;
-  width: 1128px;
-  margin: 100px auto 0;
-  @media (max-width: 1200px) {
-    width: auto;
-    justify-content: center;
-    margin-top: 0;
+  flex-wrap: wrap; // Allow components to wrap if needed
+  width: 100%; // Use the full width of the container
+  max-width: 1280px;
+  margin: 8rem auto 0 auto;
+  justify-content: space-between; // Distribute space between elements
+
+  @media (min-width: 768px) {
+    justify-content: space-around;
   }
-}
 
-app-all-posts,
-.post-divider {
-  margin: 0 12px;
-}
+  @media (max-width: 767px) {
+    flex-direction: column; // Stack elements vertically on smaller screens
+    margin-top: 50px;
+  }
 
-.post-divider {
-  padding-top: 8px;
-  margin: 0 12px;
-}
+  // Make each component fill more space
+  app-profile-summary {
+    flex: 1;
+    min-width: 250px; // Prevent components from shrinking too much
+    margin: 0 1rem 0 1rem;
+  }
 
-app-tabs {
-  margin-top: auto;
+  app-start-post {
+    flex: 1;
+    margin: 0 2rem 0 2rem;
+  }
+
+  app-all-posts {
+    flex: 1;
+    margin: 0 2rem 0 2rem;
+    padding: 0 2rem;
+  }
+
+  .post-divider {
+    margin: 2rem 2rem 2rem 2rem;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    flex: 3; // Make this container expand more
+  }
+
+  app-tabs {
+    margin-top: auto;
+  }
 }

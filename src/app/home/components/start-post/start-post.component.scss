@@ -1,44 +1,57 @@
 ion-card {
-  width: 525px;
+  width: 100%;
   box-shadow: none;
   border: 1px solid #e1e1e1;
-  @media (max-width: 576px) {
-    width: 500px;
-  }
-  @media (max-width: 525px) {
-    width: 420px;
-  }
-  @media (max-width: 440px) {
-    width: 340px;
-  }
-  @media (max-width: 360px) {
-    width: 280px;
-  }
 }
 
 ion-card-header {
   display: flex;
-}
+  align-items: center; // Proper alignment of avatar and button
+  padding: 16px;
 
-ion-avatar {
-  width: 48px;
-  height: 48px;
-}
+  ion-avatar {
+    width: 48px;
+    height: 48px;
+  }
 
-ion-card-header {
   ion-button {
     --border-width: 1px;
     height: 48px;
-    width: 100%;
     margin-left: 16px;
+    flex-grow: 1; // Ensure the button takes up remaining space
   }
-}
-
-span.ion-text-left {
-  margin-right: auto;
 }
 
 ion-card-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around; // Space buttons evenly
+  padding: 16px;
+
+  ion-button {
+    flex-direction: column; // Align icon and text vertically for better mobile presentation
+    align-items: center;
+    --padding-start: 0;
+    --padding-end: 0;
+  }
+
+  ion-icon {
+    font-size: 24px;
+    margin-bottom: 4px; // Add some spacing between icon and text
+  }
+
+  ion-text {
+    font-size: 1.2rem; // Adjust font size for better readability
+  }
+}
+
+app-start-post,
+app-all-posts {
+  flex-grow: 1; // Allow these elements to grow and use space
+  margin: 2rem 0 2rem 0;
+}
+
+ion-card {
+  width: 100%; // Stretch the card to fill parent width
+  box-shadow: none;
+  border: 1px solid #e1e1e1;
 }

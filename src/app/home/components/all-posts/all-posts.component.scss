@@ -1,9 +1,13 @@
 .all-posts-container {
   display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   ion-content {
     height: calc(100vh - 320px);
+    display: flex;
+    flex-direction: column;
     ion-list {
-      background-color: #f3f2ef;
+      background-color: var(--ion-color-tertiary);
       padding-top: 0;
     }
     ion-card {
@@ -14,7 +18,7 @@
         font-weight: 500;
       }
       .role {
-        font-size: 12px;
+        font-size: var(--ion-default-font);
         margin-top: 2px;
         margin-bottom: 1px;
       }
@@ -22,8 +26,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 12px;
-        width: 80px;
+        font-size: var(--ion-default-font);
+        width: 10rem;
       }
       ion-icon[name="ellipse"] {
         font-size: 4px;
@@ -34,8 +38,8 @@
       }
     }
     ion-avatar {
-      width: 48px;
-      height: 48px;
+      width: 5rem;
+      height: 5rem;
     }
   }
   .hide-scroll {

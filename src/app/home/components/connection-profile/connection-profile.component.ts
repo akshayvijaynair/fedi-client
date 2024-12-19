@@ -34,8 +34,9 @@ export class ConnectionProfileComponent implements OnInit, OnDestroy {
           this.friendRequestStatus = friendRequestStatus.status?? "pending";
           this.userSubscription$ = this.getUser().subscribe((user: User) => {
             this.user = user;
-            const imgPath = user.imagePath ?? 'blank-profile-picture.png';
-            this.user.imagePath =
+            const imgPath = user.icon && (user.icon.url ?? 'blank-profile-picture.png');
+            // @ts-ignore
+            this.user.icon.url =
               'http://localhost:3000/api/feed/image/' + imgPath;
           });
         })

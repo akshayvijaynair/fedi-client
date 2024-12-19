@@ -46,11 +46,7 @@ export class ProfileSummaryComponent implements OnInit, OnDestroy {
       });
 
     this.userSubscription = this.authService.userStream.subscribe(
-      (user: User) => {
-        if (user?.role) {
-          this.bannerColorService.bannerColors =
-            this.bannerColorService.getBannerColors(user.role);
-        }
+      (user: User | null) => {
 
         if (user && user?.firstName && user?.lastName) {
           this.fullName = user.firstName + ' ' + user.lastName;

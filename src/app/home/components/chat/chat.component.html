@@ -26,20 +26,15 @@
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <ion-col size="auto">
             <ion-avatar>
-              <ion-img
-                *ngIf="friend.imagePath; else blankProfilePicture"
-                [src]="
-                  'http://localhost:3000/api/feed/image/' + friend.imagePath
-                "
-              ></ion-img>
-
-              <ng-template #blankProfilePicture>
+              @if (friend.icon?.url){
+                <ion-img [src]="'http://localhost:3000/api/feed/image/' + friend.icon?.url"></ion-img>
+              } @else {
                 <ion-img
                   [src]="
                     'http://localhost:3000/api/feed/image/blank-profile-picture.png'
                   "
                 ></ion-img>
-              </ng-template>
+              }
             </ion-avatar>
           </ion-col>
           <ion-col>

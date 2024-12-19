@@ -28,7 +28,7 @@ export class FriendRequestsPopoverComponent implements OnInit {
               tap((user: User) => {
                 friendRequest['fullImagePath'] =
                   'http://localhost:3000/api/feed/image/' +
-                  (user?.imagePath || 'blank-profile-picture.png');
+                  ('blank-profile-picture.png');
               })
             )
             .subscribe();
